@@ -31,5 +31,12 @@ shinyServer(function(input, output) {
     out <- fromJSON(url)
     out$result$count
   })
+  
+  output$dateFrom <- renderText({
+    if(!is.na(input$prevDays))
+      url <- paste0(url, "&prevDays=", input$prevDays)
+    out <- fromJSON(url)
+    out$query
+  })
 
 })

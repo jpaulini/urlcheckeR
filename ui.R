@@ -11,6 +11,7 @@ shinyUI(fluidPage(
   verticalLayout(
     tags$head(HTML("<script type='text/javascript' src='js/main.js'></script>")),
     titlePanel("Chequeo de URLs"),
+    h4( textOutput("dateFrom")),
     splitLayout(cellWidths = c("25%", "75%"),
                 textOutput("count"),
                 plotOutput("distPlot")
