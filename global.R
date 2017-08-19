@@ -5,4 +5,4 @@ url <- "https://functionsurlcheck.azurewebsites.net/api/HttpTriggerJSGetLastEven
 # Params:
 # prevDays
 # partition 
-data <- fromJSON(url)
+# data <- fromJSON(url)
