@@ -14,6 +14,12 @@ url <- "https://functionsurlcheck.azurewebsites.net/api/HttpTriggerJSGetLastEven
 # partition 
 
 shinyServer(function(input, output) {
+  datasetInput <- reactive({
+    #populate datasetInput with request to Azure repository
+    if(!is.na(input$prevDays))
+      url <- paste0(url, "&prevDays=", input$prevDays)
+    return(fromJSON(url))  
+  })
 
   output$distPlot <- renderPlot({
 
@@ -26,17 +32,11 @@ shinyServer(function(input, output) {
 
   })
   output$count <- renderText({
-    if(!is.na(input$prevDays))
-      url <- paste0(url, "&prevDays=", input$prevDays)
-    out <- fromJSON(url)
-    out$result$count
+    datasetInput()$result$count
   })
   
   output$dateFrom <- renderText({
-    if(!is.na(input$prevDays))
-      url <- paste0(url, "&prevDays=", input$prevDays)
-    out <- fromJSON(url)
-    out$query
+    datasetInput()$query
   })
 
 })
