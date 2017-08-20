@@ -17,7 +17,8 @@ shinyUI(fluidPage(
                 plotOutput("distPlot")
     ),
     wellPanel(
-      sliderInput("prevDays", "Dias", 1, 30, value=1, step=1)
-    )
+      sliderInput("prevDays", "Dias", 1, 30, value=7, step=1)
+    ),
+    dataTableOutput('table')
   )
 ))

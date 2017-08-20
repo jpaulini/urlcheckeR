@@ -38,5 +38,17 @@ shinyServer(function(input, output) {
   output$dateFrom <- renderText({
     datasetInput()$query
   })
+  
+  output$table <- renderDataTable({
+    tibble(
+      URL = datasetInput()$result$entities$URL$`_`,
+      Status = datasetInput()$result$entities$Status$`_`,
+      Fecha = ymd_hms(datasetInput()$result$entities$Timestamp$`_`) )
+  },
+  options = list(
+    searching = FALSE,
+    lengthChange = FALSE
+  )
+  )
 
 })
