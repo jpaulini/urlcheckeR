@@ -6,7 +6,7 @@
 #
 
 library(shiny)
-library("jsonlite")
+library("tidyverse")
 
 url <- "https://functionsurlcheck.azurewebsites.net/api/HttpTriggerJSGetLastEvents?code=mxNHHLjCzKkvAeuFEpcP65tXt3aE8O1VrROEoAWuZgWEwE5KrR52nQ=="
 # Params:
@@ -15,20 +15,20 @@ url <- "https://functionsurlcheck.azurewebsites.net/api/HttpTriggerJSGetLastEven
 
 shinyServer(function(input, output) {
   datasetInput <- reactive({
-    #populate datasetInput with request to Azure repository
+    #populate datasetInput with request from Azure repository
     if(!is.na(input$prevDays))
       url <- paste0(url, "&prevDays=", input$prevDays)
     return(fromJSON(url))  
   })
 
   output$distPlot <- renderPlot({
-
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$prevDays + 1)
-
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    tb <- tibble(
+      URLs = datasetInput()$result$entities$URL$`_`,
+      status = datasetInput()$result$entities$Status$`_`,
+      datetime = ymd_hms(datasetInput()$result$entities$Timestamp$`_`) )
+    
+    tb %>% arrange(datetime) %>% ggplot(aes(datetime)) +
+      geom_freqpoly(binwidth=3600)
 
   })
   output$count <- renderText({
