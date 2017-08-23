@@ -9,6 +9,7 @@ library(shiny)
 
 shinyUI(fluidPage(
   verticalLayout(
+    tags$head(HTML("<meta http-equiv='refresh' content='60'>")), 
     tags$head(HTML("<script type='text/javascript' src='js/main.js'></script>")),
     titlePanel("Chequeo de URLs"),
     h4( textOutput("dateFrom")),
